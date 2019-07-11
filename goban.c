@@ -22,6 +22,7 @@ drawgoban(int size, s8int *goban)
 	double scale;
 	Point o;
 	Rectangle r;
+	Point poly[4];
 	Image *bg;
 
 	o = screen->r.min;
@@ -34,11 +35,11 @@ drawgoban(int size, s8int *goban)
 	border(screen, r, l, display->black, ZP);
 
 	r = insetrect(r, l);
-	Point poly[4] = {
-		r.min,
-		Pt(r.max.x, r.min.y),
-		r.max,
-		Pt(r.min.x, r.max.y)};
+	poly[0] = r.min;
+	poly[1] = Pt(r.max.x, r.min.y);
+	poly[2] = r.max;
+	poly[3] = Pt(r.min.x, r.max.y);
+	/* TODO: find a better colour. */
 	bg = allocimage(display, Rect(0, 0, 1, 1), RGB24, 1, 0xE6BF83FF);
 	fillpoly(screen, poly, 4, ~0, bg, ZP);
 }
