@@ -42,6 +42,7 @@ drawgoban(int size, s8int *goban)
 	/* TODO: find a better colour. */
 	bg = allocimage(display, Rect(0, 0, 1, 1), RGB24, 1, 0xE6BF83FF);
 	fillpoly(screen, poly, 4, ~0, bg, ZP);
+	freeimage(bg);
 }
 
 void
