@@ -18,7 +18,7 @@ enum
 void
 drawgoban(int size, s8int *goban)
 {
-	int n;
+	int n, l;
 	double scale;
 	Point o;
 	Rectangle r;
@@ -28,7 +28,9 @@ drawgoban(int size, s8int *goban)
 	scale = (double)n / (double)Gobanh;
 
 	r = Rect(o.x, o.y, o.x + n, o.y + n);
-	border(screen, r, 1, display->black, ZP);
+	if((l = (int)((double)Line * scale)) < 1)
+		l = 1;
+	border(screen, r, l, display->black, ZP);
 }
 
 void
