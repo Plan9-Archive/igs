@@ -22,6 +22,7 @@ drawgoban(int size, s8int *goban)
 	double scale;
 	Point o;
 	Rectangle r;
+	Image *bg;
 
 	o = screen->r.min;
 	n = Dx(screen->r) < Dy(screen->r) ? Dx(screen->r) : Dy(screen->r);
@@ -31,6 +32,15 @@ drawgoban(int size, s8int *goban)
 	if((l = (int)((double)Line * scale)) < 1)
 		l = 1;
 	border(screen, r, l, display->black, ZP);
+
+	r = insetrect(r, l);
+	Point poly[4] = {
+		r.min,
+		Pt(r.max.x, r.min.y),
+		r.max,
+		Pt(r.min.x, r.max.y)};
+	bg = allocimage(display, Rect(0, 0, 1, 1), RGB24, 1, 0xE6BF83FF);
+	fillpoly(screen, poly, 4, ~0, bg, ZP);
 }
 
 void
