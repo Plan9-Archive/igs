@@ -1,0 +1,5 @@
+syntax: glob
+
+*.6
+6.*
+url
