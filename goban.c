@@ -61,6 +61,18 @@ drawgoban(int gsize)
 			py + (int)(i * scale * Lineh));
 		line(screen, p, q, Enddisc, Enddisc, l / 2, display->black, ZP);
 	}
+
+	/* Draw hoshi; only implemented for 19x19 gobans. */
+	if(gsize != 19)
+		return;
+	hr = scale * (Hoshidiam / 2);
+	for(i = 3; i < 16; i += 6){
+		for(j = 3; j < 16; j += 6){
+			p = Pt(px + (int)(i * scale * Linew),
+				py + (int)(j * scale * Lineh));
+			fillellipse(screen, p, hr, hr, display->black, ZP);
+		}
+	}
 }
 
 void
