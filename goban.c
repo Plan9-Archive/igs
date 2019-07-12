@@ -18,8 +18,8 @@ enum
 void
 drawgoban(int sgoban, s8int *goban)
 {
-	int i;
-	int l;
+	int i, j;
+	int l, hr;
 	double scale;
 	Point o;
 	int px, py;
@@ -37,11 +37,9 @@ drawgoban(int sgoban, s8int *goban)
 	/* The line function uses 1 + 2 * width as its thickness. */
 	l = (Line * scale - 1) / 2;
 
-	/* Draw goban border. */
+	/* Fill goban background. */
 	p = Pt(o.x + (int)(scale * Gobanw), o.y + (int)(scale * Gobanh));
 	r = Rpt(o, p);
-
-	/* Fill goban background. */
 	poly[0] = r.min;
 	poly[1] = Pt(r.max.x, r.min.y);
 	poly[2] = r.max;
