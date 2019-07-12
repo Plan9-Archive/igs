@@ -16,7 +16,7 @@ enum
 };
 
 void
-drawgoban(int sgoban, s8int *goban)
+drawgoban(int gsize)
 {
 	int i, j;
 	int l, hr;
@@ -49,15 +49,15 @@ drawgoban(int sgoban, s8int *goban)
 	freeimage(bg);
 
 	/* Draw lines. */
-	px = o.x + (int)(scale * (Gobanw - (sgoban - 1) * Linew) / 2);
-	py = o.y + (int)(scale * (Gobanh - (sgoban - 1) * Lineh) / 2);
-	for(i = 0; i < sgoban; i++){
+	px = o.x + (int)(scale * (Gobanw - (gsize - 1) * Linew) / 2);
+	py = o.y + (int)(scale * (Gobanh - (gsize - 1) * Lineh) / 2);
+	for(i = 0; i < gsize; i++){
 		p = Pt(px + (int)(i * scale * Linew), py);
 		q = Pt(px + (int)(i * scale * Linew),
-			py + (int)(scale * (sgoban - 1) * Lineh));
+			py + (int)(scale * (gsize - 1) * Lineh));
 		line(screen, p, q, Enddisc, Enddisc, l / 2, display->black, ZP);
 		p = Pt(px, py + (int)(i * scale * Lineh));
-		q = Pt(px + (int)(scale * (sgoban - 1) * Linew),
+		q = Pt(px + (int)(scale * (gsize - 1) * Linew),
 			py + (int)(i * scale * Lineh));
 		line(screen, p, q, Enddisc, Enddisc, l / 2, display->black, ZP);
 	}
@@ -72,7 +72,7 @@ main(void)
 		sysfatal("initgoban failed: %r");
 	einit(Emouse);
 
-	drawgoban(19, nil);
+	drawgoban(19);
 
 	for(;;m = emouse())
 		if(m.buttons)
