@@ -39,8 +39,7 @@ drawgoban(int size, s8int *goban)
 	poly[1] = Pt(r.max.x, r.min.y);
 	poly[2] = r.max;
 	poly[3] = Pt(r.min.x, r.max.y);
-	/* TODO: find a better colour. */
-	bg = allocimage(display, Rect(0, 0, 1, 1), RGB24, 1, 0xE6BF83FF);
+	bg = allocimage(display, Rect(0, 0, 1, 1), RGB24, 1, 0xD79C5EFF);
 	fillpoly(screen, poly, 4, ~0, bg, ZP);
 	freeimage(bg);
 }
