@@ -16,12 +16,13 @@ enum
 };
 
 void
-drawgoban(int size, s8int *goban)
+drawgoban(int sgoban, s8int *goban)
 {
 	int i;
 	int l;
 	double scale;
 	Point o;
+	int px, py;
 	Point p, q;
 	Rectangle r;
 	Point poly[4];
@@ -38,7 +39,7 @@ drawgoban(int size, s8int *goban)
 
 	/* Draw goban border. */
 	p = Pt(o.x + (int)(scale * Gobanw), o.y + (int)(scale * Gobanh));
-	r = Rect(o, p);
+	r = Rpt(o, p);
 	border(screen, r, l, display->black, ZP);
 
 	/* Fill goban background. */
@@ -50,6 +51,20 @@ drawgoban(int size, s8int *goban)
 	bg = allocimage(display, Rect(0, 0, 1, 1), RGB24, 1, 0xD79C5EFF);
 	fillpoly(screen, poly, 4, ~0, bg, ZP);
 	freeimage(bg);
+
+	/* Draw lines. */
+	px = o.x + (int)(scale * (Gobanw - (sgoban - 1) * Linew) / 2);
+	py = o.y + (int)(scale * (Gobanh - (sgoban - 1) * Lineh) / 2);
+	for(i = 0; i < sgoban; i++){
+		p = Pt(px + (int)(i * scale * Linew), py);
+		q = Pt(px + (int)(i * scale * Linew),
+			py + (int)(scale * (sgoban - 1) * Lineh));
+		line(screen, p, q, Enddisc, Enddisc, l / 2, display->black, ZP);
+		p = Pt(px, py + (int)(i * scale * Lineh));
+		q = Pt(px + (int)(scale * (sgoban - 1) * Linew),
+			py + (int)(i * scale * Lineh));
+		line(screen, p, q, Enddisc, Enddisc, l / 2, display->black, ZP);
+	}
 }
 
 void
@@ -61,7 +76,7 @@ main(void)
 		sysfatal("initgoban failed: %r");
 	einit(Emouse);
 
-	drawgoban(5, nil);
+	drawgoban(19, nil);
 
 	for(;;m = emouse())
 		if(m.buttons)
@@ -75,5 +90,5 @@ eresized(int new)
 {
 	if(new)
 		if(getwindow(display, Refnone) < 0)
-			sysfatal("eresized failed: %r");
+			sysfatal("eresgoband failed: %r");
 }
