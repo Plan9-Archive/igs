@@ -18,22 +18,30 @@ enum
 void
 drawgoban(int size, s8int *goban)
 {
-	int n, l;
+	int i;
+	int l;
 	double scale;
 	Point o;
+	Point p, q;
 	Rectangle r;
 	Point poly[4];
 	Image *bg;
 
 	o = screen->r.min;
-	n = Dx(screen->r) < Dy(screen->r) ? Dx(screen->r) : Dy(screen->r);
-	scale = (double)n / (double)Gobanh;
-
-	r = Rect(o.x, o.y, o.x + n, o.y + n);
+	if(Dx(screen->r) * Gobanh < Dy(screen->r) * Gobanw){
+		scale = (double)Dx(screen->r) / Gobanw;
+	}else{
+		scale = (double)Dy(screen->r) / Gobanh;
+	}
 	if((l = (int)((double)Line * scale)) < 1)
 		l = 1;
+
+	/* Draw goban border. */
+	p = Pt(o.x + (int)(scale * Gobanw), o.y + (int)(scale * Gobanh));
+	r = Rect(o, p);
 	border(screen, r, l, display->black, ZP);
 
+	/* Fill goban background. */
 	r = insetrect(r, l);
 	poly[0] = r.min;
 	poly[1] = Pt(r.max.x, r.min.y);
