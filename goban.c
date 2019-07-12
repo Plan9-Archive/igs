@@ -40,10 +40,8 @@ drawgoban(int sgoban, s8int *goban)
 	/* Draw goban border. */
 	p = Pt(o.x + (int)(scale * Gobanw), o.y + (int)(scale * Gobanh));
 	r = Rpt(o, p);
-	border(screen, r, l, display->black, ZP);
 
 	/* Fill goban background. */
-	r = insetrect(r, l);
 	poly[0] = r.min;
 	poly[1] = Pt(r.max.x, r.min.y);
 	poly[2] = r.max;
