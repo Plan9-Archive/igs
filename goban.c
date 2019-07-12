@@ -34,8 +34,8 @@ drawgoban(int sgoban, s8int *goban)
 	}else{
 		scale = (double)Dy(screen->r) / Gobanh;
 	}
-	if((l = (int)((double)Line * scale)) < 1)
-		l = 1;
+	/* The line function uses 1 + 2 * width as its thickness. */
+	l = (Line * scale - 1) / 2;
 
 	/* Draw goban border. */
 	p = Pt(o.x + (int)(scale * Gobanw), o.y + (int)(scale * Gobanh));
