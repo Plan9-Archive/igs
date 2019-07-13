@@ -40,6 +40,7 @@ drawgoban(void)
 {
 	int i, j;
 	int l, hr, sr;
+	int hoshi[3];
 	Point o;
 	Point p, q;
 	Rectangle r;
@@ -80,16 +81,30 @@ drawgoban(void)
 		line(screen, p, q, Enddisc, Enddisc, l / 2, display->black, ZP);
 	}
 
-	/* Draw hoshi; only implemented for 19x19 gobans. */
-	if(sgoban == 19){
-		hr = scale * Hoshidiam / 2;
-		for(i = 3; i < 16; i += 6){
-			for(j = 3; j < 16; j += 6){
-				p = Pt(ogoban.x + (int)(i * scale * Linew),
-					ogoban.y + (int)(j * scale * Lineh));
-				fillellipse(screen, p, hr, hr, display->black,
-					ZP);
-			}
+	/* Draw hoshi; only meaningful for 19x19, 13x13 and 9x9. */
+	hr = scale * Hoshidiam / 2;
+	switch(sgoban){
+	case 19:
+		hoshi[0] = 3;
+		hoshi[1] = 9;
+		hoshi[2] = 15;
+		break;
+	case 13:
+		hoshi[0] = 3;
+		hoshi[1] = 6;
+		hoshi[2] = 9;
+		break;
+	case 9:
+		hoshi[0] = 2;
+		hoshi[1] = 4;
+		hoshi[2] = 6;
+		break;
+	}
+	for(i = 0; i < 3; i++){
+		for(j = 0; j < 3; j++){
+			p = Pt(ogoban.x + (int)(hoshi[i] * scale * Linew),
+				ogoban.y + (int)(hoshi[j] * scale * Lineh));
+			fillellipse(screen, p, hr, hr, display->black, ZP);
 		}
 	}
 
