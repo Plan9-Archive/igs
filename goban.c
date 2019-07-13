@@ -62,6 +62,8 @@ main(void)
 	for(;;m = emouse()){
 		if(m.buttons&1){
 			move = px2move(m.xy);
+			if(move == -1)
+				print("error: %r\n");
 		}else if(m.buttons&4){
 			switch(emenuhit(3, &m, &rmenu)){
 			case 0:
@@ -170,8 +172,10 @@ px2move(Point px)
 	p = Pt(ogoban.x - scale * Linew / 2, ogoban.y - scale * Lineh / 2);
 	r = Rect(p.x, p.y, p.x + scale * sgoban * Linew,
 		p.y + scale * sgoban * Lineh);
-	if(ptinrect(px, r) == 0)
+	if(ptinrect(px, r) == 0){
+		werrstr("Click out of the goban.");
 		return -1;
+	}
 	p = subpt(px, r.min);
 	p.x /= scale * Linew;
 	p.y /= scale * Lineh;
