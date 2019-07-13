@@ -41,6 +41,13 @@ int playmove(int, int);
 void eresized(int);
 
 void
+usage(void)
+{
+	fprint(2, "usage: %s [-s gobansize]\n", argv0);
+	exits("usage");
+}
+
+void
 main(int argc, char *argv[])
 {
 	int move, turn;
@@ -48,8 +55,13 @@ main(int argc, char *argv[])
 
 	ARGBEGIN {
 	case 's':
-		sgoban = atoi(ARGF());
+		sgoban = atoi(EARGF(usage()));
+		break;
+	case 'h':
+		usage();
 	} ARGEND
+	if(argc != 0)
+		usage();
 
 	if(initdraw(0, 0, "goban") < 0)
 		sysfatal("initgoban failed: %r");
