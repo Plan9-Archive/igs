@@ -41,10 +41,15 @@ int playmove(int, int);
 void eresized(int);
 
 void
-main(void)
+main(int argc, char *argv[])
 {
 	int move, turn;
 	Mouse m;
+
+	ARGBEGIN {
+	case 's':
+		sgoban = atoi(ARGF());
+	} ARGEND
 
 	if(initdraw(0, 0, "goban") < 0)
 		sysfatal("initgoban failed: %r");
