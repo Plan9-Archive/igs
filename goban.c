@@ -31,7 +31,7 @@ Menu rmenu =
 };
 
 int sgoban = Maxgobansize; /* Goban size, sgoban x sgoban. */
-s8int goban[Maxgobansize * Maxgobansize] = {0};
+int goban[Maxgobansize * Maxgobansize] = {0};
 Point ogoban; /* Origin of the lines of the goban. */
 double scale;
 
