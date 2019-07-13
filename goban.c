@@ -32,15 +32,15 @@ Menu rmenu =
 
 int sgoban = Maxgobansize; /* Goban size, sgoban x sgoban. */
 s8int goban[Maxgobansize * Maxgobansize] = {0};
+Point ogoban; /* Origin of the lines of the goban. */
+double scale;
 
 void
 drawgoban(void)
 {
 	int i, j;
 	int l, hr, sr;
-	double scale;
 	Point o;
-	int px, py;
 	Point p, q;
 	Rectangle r;
 	Point poly[4];
@@ -67,16 +67,16 @@ drawgoban(void)
 	freeimage(bg);
 
 	/* Draw lines. */
-	px = o.x + (int)(scale * (Gobanw - (sgoban - 1) * Linew) / 2);
-	py = o.y + (int)(scale * (Gobanh - (sgoban - 1) * Lineh) / 2);
+	ogoban = Pt(o.x + scale * (Gobanw - (sgoban - 1) * Linew) / 2,
+		o.y + scale * (Gobanh - (sgoban - 1) * Lineh) / 2);
 	for(i = 0; i < sgoban; i++){
-		p = Pt(px + (int)(i * scale * Linew), py);
-		q = Pt(px + (int)(i * scale * Linew),
-			py + (int)(scale * (sgoban - 1) * Lineh));
+		p = Pt(ogoban.x + (int)(i * scale * Linew), ogoban.y);
+		q = Pt(ogoban.x + (int)(i * scale * Linew),
+			ogoban.y + (int)(scale * (sgoban - 1) * Lineh));
 		line(screen, p, q, Enddisc, Enddisc, l / 2, display->black, ZP);
-		p = Pt(px, py + (int)(i * scale * Lineh));
-		q = Pt(px + (int)(scale * (sgoban - 1) * Linew),
-			py + (int)(i * scale * Lineh));
+		p = Pt(ogoban.x, ogoban.y + (int)(i * scale * Lineh));
+		q = Pt(ogoban.x + (int)(scale * (sgoban - 1) * Linew),
+			ogoban.y + (int)(i * scale * Lineh));
 		line(screen, p, q, Enddisc, Enddisc, l / 2, display->black, ZP);
 	}
 
@@ -85,8 +85,8 @@ drawgoban(void)
 		hr = scale * Hoshidiam / 2;
 		for(i = 3; i < 16; i += 6){
 			for(j = 3; j < 16; j += 6){
-				p = Pt(px + (int)(i * scale * Linew),
-					py + (int)(j * scale * Lineh));
+				p = Pt(ogoban.x + (int)(i * scale * Linew),
+					ogoban.y + (int)(j * scale * Lineh));
 				fillellipse(screen, p, hr, hr, display->black,
 					ZP);
 			}
@@ -97,12 +97,12 @@ drawgoban(void)
 	sr = scale * Stonediam / 2;
 	for(i = 0; i < sgoban *  sgoban; i++){
 		if(goban[i] == Black){
-			p = Pt(px + i % sgoban * scale * Linew,
-				py + i / sgoban * scale * Lineh);
+			p = Pt(ogoban.x + i % sgoban * scale * Linew,
+				ogoban.y + i / sgoban * scale * Lineh);
 			fillellipse(screen, p, sr, sr, display->black, ZP);
 		}else if(goban[i] == White){
-			p = Pt(px + i % sgoban * scale * Linew,
-				py + i / sgoban * scale * Lineh);
+			p = Pt(ogoban.x + i % sgoban * scale * Linew,
+				ogoban.y + i / sgoban * scale * Lineh);
 			ellipse(screen, p, sr, sr, 0, display->black, ZP);
 			fillellipse(screen, p, sr-1, sr-1, display->white, ZP);
 		}
