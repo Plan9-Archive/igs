@@ -35,6 +35,24 @@ int goban[Maxgobansize * Maxgobansize] = {0};
 Point ogoban; /* Origin of the lines of the goban. */
 double scale;
 
+/* Pixel coordinates to Go move. */
+int
+px2move(Point px)
+{
+	Point p;
+	Rectangle r;
+
+	p = Pt(ogoban.x - scale * Linew / 2, ogoban.y - scale * Lineh / 2);
+	r = Rect(p.x, p.y, p.x + scale * sgoban * Linew,
+		p.y + scale * sgoban * Lineh);
+	if(ptinrect(px, r) == 0)
+		return -1;
+	p = subpt(px, r.min);
+	p.x /= scale * Linew;
+	p.y /= scale * Lineh;
+	return p.x * sgoban + p.y;
+}
+
 void
 drawgoban(void)
 {
@@ -127,6 +145,7 @@ drawgoban(void)
 void
 main(void)
 {
+	int move;
 	Mouse m;
 
 	if(initdraw(0, 0, "goban") < 0)
@@ -143,7 +162,9 @@ main(void)
 	drawgoban();
 
 	for(;;m = emouse()){
-		if(m.buttons&4){
+		if(m.buttons&1){
+			move = px2move(m.xy);
+		}else if(m.buttons&4){
 			switch(emenuhit(3, &m, &rmenu)){
 			case 0:
 				exits(0);
