@@ -86,6 +86,7 @@ main(int argc, char *argv[])
 		sysfatal("initgoban failed: %r");
 	einit(Emouse);
 
+	initgoban();
 	drawgoban();
 
 	turn = Black;

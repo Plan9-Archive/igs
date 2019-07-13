@@ -1,14 +1,20 @@
 enum
 {
-	Maxgobansize = 19,
 	White = -1,
-	Black = 1,
-	Ko = 4
+	Empty,
+	Black,
+	Marked,
+	Ko,
+	Maxgobansize = 19
 };
 
 int sgoban; /* Goban size, sgoban x sgoban. */
-int goban[Maxgobansize * Maxgobansize] = {0};
+int goban[Maxgobansize * Maxgobansize] = {Empty};
+int nblackcaptured;
+int nwhitecaptured;
 
+
+void initgoban(void);
 int playmove(int, int);
 int undomove(int);
 int pickundo(void);
