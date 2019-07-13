@@ -232,13 +232,13 @@ px2move(Point px)
 }
 
 int
-playmove(int turn, int m)
+playmove(int turn, int move)
 {
-	if(m< 0 || m > sgoban * sgoban){
+	if(move< 0 || move > sgoban * sgoban){
 		werrstr("Move is out of bounds.");
 		return -1;
 	}
-	switch(goban[m]){
+	switch(goban[move]){
 	case Black:
 	case White:
 		werrstr("There is already a stone here.");
@@ -247,7 +247,7 @@ playmove(int turn, int m)
 		werrstr("Cannot retake ko.");
 		return -1;
 	default:
-		goban[m] = turn;
+		goban[move] = turn;
 	}
 	return 0;
 }
