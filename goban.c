@@ -3,6 +3,17 @@
 #include <draw.h>
 #include <event.h>
 
+char *rbuttons[] = 
+{
+	"exit",
+	0
+};
+
+Menu rmenu =
+{
+	rbuttons,
+};
+
 /* Traditional dimensions in tenth of mm */
 enum
 {
@@ -88,11 +99,14 @@ main(void)
 
 	drawgoban();
 
-	for(;;m = emouse())
-		if(m.buttons)
-			break;
-
-	exits(0);
+	for(;;m = emouse()){
+		if(m.buttons&4){
+			switch(emenuhit(3, &m, &rmenu)){
+			case 0:
+				exits(0);
+			}
+		}
+	}
 }
 
 void
