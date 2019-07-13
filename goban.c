@@ -42,7 +42,7 @@ void eresized(int);
 void
 main(void)
 {
-	int move;
+	int ret;
 	Mouse m;
 
 	if(initdraw(0, 0, "goban") < 0)
@@ -61,8 +61,8 @@ main(void)
 
 	for(;;m = emouse()){
 		if(m.buttons&1){
-			move = px2move(m.xy);
-			if(move == -1)
+			ret = px2move(m.xy);
+			if(ret == -1)
 				print("error: %r\n");
 		}else if(m.buttons&4){
 			switch(emenuhit(3, &m, &rmenu)){
@@ -179,7 +179,7 @@ px2move(Point px)
 	p = subpt(px, r.min);
 	p.x /= scale * Linew;
 	p.y /= scale * Lineh;
-	return p.x * sgoban + p.y;
+	return p.y * sgoban + p.x;
 }
 
 void
