@@ -118,6 +118,13 @@ main(void)
 		sysfatal("initgoban failed: %r");
 	einit(Emouse);
 
+	goban[160] = 1;
+	goban[178] = 1;
+	goban[180] = 1;
+	goban[198] = 1;
+	goban[161] = -1;
+	goban[181] = -1;
+	goban[199] = -1;
 	drawgoban();
 
 	for(;;m = emouse()){
