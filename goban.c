@@ -2,6 +2,19 @@
 #include <libc.h>
 #include <draw.h>
 #include <event.h>
+#include <cursor.h>
+
+Cursor sightcursor = {
+	{-7, -7},
+	{0x1F, 0xF8, 0x3F, 0xFC, 0x7F, 0xFE, 0xFB, 0xDF,
+	 0xF3, 0xCF, 0xE3, 0xC7, 0xFF, 0xFF, 0xFF, 0xFF,
+	 0xFF, 0xFF, 0xFF, 0xFF, 0xE3, 0xC7, 0xF3, 0xCF,
+	 0x7B, 0xDF, 0x7F, 0xFE, 0x3F, 0xFC, 0x1F, 0xF8},
+	{0x00, 0x00, 0x0F, 0xF0, 0x31, 0x8C, 0x21, 0x84,
+	 0x41, 0x82, 0x41, 0x82, 0x41, 0x82, 0x7F, 0xFE,
+	 0x7F, 0xFE, 0x41, 0x82, 0x41, 0x82, 0x41, 0x82,
+	 0x21, 0x84, 0x31, 0x8C, 0x0F, 0xF0, 0x00, 0x00}
+};
 
 enum
 {
@@ -19,10 +32,21 @@ enum
 	Stonediam = 225
 };
 
+char *mbuttons[] = 
+{
+	"undo",
+	0
+};
+
 char *rbuttons[] = 
 {
 	"exit",
 	0
+};
+
+Menu mmenu =
+{
+	mbuttons,
 };
 
 Menu rmenu =
@@ -38,7 +62,7 @@ double scale;
 void drawgoban(void);
 int px2move(Point);
 int playmove(int, int);
-void eresized(int);
+void delmove(void);
 
 void
 usage(void)
@@ -67,18 +91,10 @@ main(int argc, char *argv[])
 		sysfatal("initgoban failed: %r");
 	einit(Emouse);
 
-	goban[160] = 1;
-	goban[178] = 1;
-	goban[180] = 1;
-	goban[198] = 1;
-	goban[161] = -1;
-	goban[181] = -1;
-	goban[199] = -1;
-
 	drawgoban();
 
 	turn = Black;
-	for(;;m = emouse()){
+	for(;; m = emouse()){
 		if(m.buttons&1){
 			move = px2move(m.xy);
 			if(move == -1){
@@ -91,6 +107,12 @@ main(int argc, char *argv[])
 			}
 			turn *= -1;
 			drawgoban();
+		}else if(m.buttons&2){
+			switch(emenuhit(2, &m, &mmenu)){
+			case 0:
+				delmove();
+				drawgoban();
+			}
 		}else if(m.buttons&4){
 			switch(emenuhit(3, &m, &rmenu)){
 			case 0:
@@ -228,6 +250,28 @@ playmove(int turn, int m)
 		goban[m] = turn;
 	}
 	return 0;
+}
+
+void
+delmove(void)
+{
+	int move;
+	Mouse m;
+
+	esetcursor(&sightcursor);
+	for(;; m = emouse()){
+		/* This event is sent when the button is released. */
+		if(m.buttons&1 && m.buttons&2 && m.buttons&4){
+			continue;
+		}else if(m.buttons&1 || m.buttons&4){
+			break;
+		}else if(m.buttons&2){
+			move = px2move(m.xy);
+			goban[move] = 0;
+			break;
+		}
+	}
+	esetcursor(nil);
 }
 
 void
