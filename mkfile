@@ -1,11 +1,10 @@
-goban: goban.6 go.6
-	6l -o goban goban.6 go.6
+</$objtype/mkfile
 
-goban.6: goban.c
-	6c -FTVw goban.c
+BIN=/$objtype/bin/games
+TARG=goban
+HFILES=goban.h
+OFILES=\
+	goban.$O\
+	go.$O\
 
-go.6: go.c
-	6c -FTVw go.c
-
-clean:V:
-	rm -rf goban *.6
+</sys/src/cmd/mkone
