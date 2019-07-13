@@ -3,6 +3,7 @@
 
 #include "goban.h"
 
+int ko;
 /* group[coord] = group to which coord belongs.
  * liberty[grp] = number of liberties of group grp.
  * groupcounter: next new group index in liberty.
@@ -22,11 +23,12 @@ initgoban(void)
 {
 	int i;
 
+	nblackcaptured = 0;
+	nwhitecaptured = 0;
+	ko = -1;
 	for(i = 0; i < sgoban * sgoban; i++){
 		group[i] = -1;
 		liberty[i] = -1;
-		nblackcaptured = 0;
-		nwhitecaptured = 0;
 	}
 }
 
@@ -97,8 +99,14 @@ playmove(int turn, int move)
 			mergegroup(newgrp, group[nbr[i]]);
 	}
 
-	if(mlib == 1 && ncap == 1)
+	if(ko != -1){
+		goban[ko] = Empty;
+		ko = -1;
+	}
+	if(mlib == 1 && ncap == 1){
 		goban[cap] = Ko;
+		ko = cap;
+	}
 	return 0;
 }
 
