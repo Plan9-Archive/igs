@@ -37,12 +37,13 @@ double scale;
 
 void drawgoban(void);
 int px2move(Point);
+int playmove(int, int);
 void eresized(int);
 
 void
 main(void)
 {
-	int ret;
+	int move, turn;
 	Mouse m;
 
 	if(initdraw(0, 0, "goban") < 0)
@@ -59,11 +60,20 @@ main(void)
 
 	drawgoban();
 
+	turn = Black;
 	for(;;m = emouse()){
 		if(m.buttons&1){
-			ret = px2move(m.xy);
-			if(ret == -1)
+			move = px2move(m.xy);
+			if(move == -1){
 				print("error: %r\n");
+				continue;
+			}
+			if(playmove(turn, move) == -1){
+				print("error: %r\n");
+				continue;
+			}
+			turn *= -1;
+			drawgoban();
 		}else if(m.buttons&4){
 			switch(emenuhit(3, &m, &rmenu)){
 			case 0:
@@ -180,6 +190,27 @@ px2move(Point px)
 	p.x /= scale * Linew;
 	p.y /= scale * Lineh;
 	return p.y * sgoban + p.x;
+}
+
+int
+playmove(int turn, int m)
+{
+	if(m< 0 || m > sgoban * sgoban){
+		werrstr("Move is out of bounds.");
+		return -1;
+	}
+	switch(goban[m]){
+	case Black:
+	case White:
+		werrstr("There is already a stone here.");
+		return -1;
+	case Ko:
+		werrstr("Cannot retake ko.");
+		return -1;
+	default:
+		goban[m] = turn;
+	}
+	return 0;
 }
 
 void
