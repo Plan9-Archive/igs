@@ -255,11 +255,27 @@ updatelib(int g)
 int
 undomove(int move)
 {
+	int i;
+	int nbr[4], nbrgrp[4];
+
+	for(i = 0; i < 4; i++)
+		nbrgrp[i] = -1;
+
 	/* Pick move with the mouse. */
 	if(move == -1)
 		move = pickundo();
 	/* Pick did not abort. */
-	if(move != -1)
-		capture(group[move]);
+	if(move != -1){
+		goban[move] = Empty;
+		group[move] = -1;
+		listnbr(move, nbr);
+		for(i = 0; i < 4; i++)
+			push(group[nbr[i]], nbrgrp, 4);
+	}
+	for(i = 0; i < 4; i++){
+		if(nbrgrp[i] == -1)
+			break;
+		updatelib(nbrgrp[i]);
+	}
 	return 0;
 }
