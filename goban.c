@@ -98,5 +98,5 @@ eresized(int new)
 {
 	if(new)
 		if(getwindow(display, Refnone) < 0)
-			sysfatal("eresgoband failed: %r");
+			sysfatal("eresized failed: %r");
 }
