@@ -4,6 +4,8 @@
 #include <event.h>
 #include <cursor.h>
 
+#include "goban.h"
+
 Cursor sightcursor = {
 	{-7, -7},
 	{0x1F, 0xF8, 0x3F, 0xFC, 0x7F, 0xFE, 0xFB, 0xDF,
@@ -16,13 +18,9 @@ Cursor sightcursor = {
 	 0x21, 0x84, 0x31, 0x8C, 0x0F, 0xF0, 0x00, 0x00}
 };
 
+/* Traditional dimensions in tenth of mm */
 enum
 {
-	Maxgobansize = 19,
-	White = -1,
-	Black = 1,
-	Ko = 4,
-	/* Traditional dimensions in tenth of mm */
 	Gobanw = 4242,
 	Gobanh = 4545,
 	Line = 10,
@@ -54,16 +52,11 @@ Menu rmenu =
 	rbuttons,
 };
 
-int sgoban = Maxgobansize; /* Goban size, sgoban x sgoban. */
-int goban[Maxgobansize * Maxgobansize] = {0};
 Point ogoban; /* Origin of the lines of the goban. */
 double scale;
 
 void drawgoban(void);
 int px2move(Point);
-int playmove(int, int);
-void undomove(void);
-void delmove(int);
 
 void
 usage(void)
@@ -78,6 +71,7 @@ main(int argc, char *argv[])
 	int move, turn;
 	Mouse m;
 
+	sgoban = Maxgobansize;
 	ARGBEGIN {
 	case 's':
 		sgoban = atoi(EARGF(usage()));
@@ -111,7 +105,7 @@ main(int argc, char *argv[])
 		}else if(m.buttons&2){
 			switch(emenuhit(2, &m, &mmenu)){
 			case 0:
-				undomove();
+				undomove(-1);
 				drawgoban();
 			}
 		}else if(m.buttons&4){
@@ -233,28 +227,7 @@ px2move(Point px)
 }
 
 int
-playmove(int turn, int move)
-{
-	if(move< 0 || move > sgoban * sgoban){
-		werrstr("Move is out of bounds.");
-		return -1;
-	}
-	switch(goban[move]){
-	case Black:
-	case White:
-		werrstr("There is already a stone here.");
-		return -1;
-	case Ko:
-		werrstr("Cannot retake ko.");
-		return -1;
-	default:
-		goban[move] = turn;
-	}
-	return 0;
-}
-
-void
-undomove(void)
+pickundo(void)
 {
 	int move;
 	Mouse m;
@@ -265,20 +238,15 @@ undomove(void)
 		if(m.buttons&1 && m.buttons&2 && m.buttons&4){
 			continue;
 		}else if(m.buttons&1 || m.buttons&4){
+			move = -1;
 			break;
 		}else if(m.buttons&2){
 			move = px2move(m.xy);
-			delmove(move);
 			break;
 		}
 	}
 	esetcursor(nil);
-}
-
-void
-delmove(int move)
-{
-	goban[move] = 0;
+	return move;
 }
 
 void

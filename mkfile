@@ -1,7 +1,11 @@
-</$objtype/mkfile
+goban: goban.6 go.6
+	6l -o goban goban.6 go.6
 
-TARG=goban
+goban.6: goban.c
+	6c -FTVw goban.c
 
-</sys/src/cmd/mkmany
+go.6: go.c
+	6c -FTVw go.c
 
-all:V:
+clean:V:
+	rm -rf goban *.6

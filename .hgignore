@@ -2,4 +2,5 @@ syntax: glob
 
 *.6
 6.*
+goban
 url

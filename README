@@ -8,3 +8,7 @@ The planned roadmap is:
 Options:
 [ ] GTP?
 [ ] Read & write SGF?
+
+files:
+goban.c main file, manages the ui.
+go.c go engine.
