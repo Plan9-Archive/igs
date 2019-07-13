@@ -134,8 +134,6 @@ capture(int grp)
 	int ncap, lsize;
 	int nbr[4], oppogrp[Maxgobansize * Maxgobansize / 2];
 
-	print("capture %d\n", grp); /* DEBUG */
-
 	ncap = 0;
 	lsize = Maxgobansize * Maxgobansize / 2;
 	for(i = 0; i < lsize; i++)
@@ -262,6 +260,6 @@ undomove(int move)
 		move = pickundo();
 	/* Pick did not abort. */
 	if(move != -1)
-		goban[move] = 0;
+		capture(group[move]);
 	return 0;
 }
