@@ -6,6 +6,9 @@
 enum
 {
 	Maxgobansize = 19,
+	White = -1,
+	Black = 1,
+	Ko = 4,
 	/* Traditional dimensions in tenth of mm */
 	Gobanw = 4242,
 	Gobanh = 4545,
