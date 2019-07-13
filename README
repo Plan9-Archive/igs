@@ -1,7 +1,10 @@
-Play go in rio, localy or on IGS.
+Play Go in plan9front, localy or on IGS.
 
 The planned roadmap is:
-* Display a goban on which one can place stones.
-* Write a go engine.
-* Write an GTP engine.
-* Write the IGS telnet client.
+[x] Display a goban on which one can place stones.
+[ ] Go engine.
+[ ] IGS telnet client.
+
+Options:
+[ ] GTP?
+[ ] Read & write SGF?
