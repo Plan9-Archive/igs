@@ -31,7 +31,7 @@ Menu rmenu =
 };
 
 int sgoban = Maxgobansize; /* Goban size, sgoban x sgoban. */
-s8int goban[Maxgobansize * Maxgobansize];
+s8int goban[Maxgobansize * Maxgobansize] = {0};
 
 void
 drawgoban(void)
@@ -90,6 +90,20 @@ drawgoban(void)
 				fillellipse(screen, p, hr, hr, display->black,
 					ZP);
 			}
+		}
+	}
+
+	/* Draw stones. */
+	sr = scale * Stonediam / 2;
+	for(i = 0; i < sgoban *  sgoban; i++){
+		if(goban[i] == Black){
+			p = Pt(px + i % sgoban * scale * Linew,
+				py + i / sgoban * scale * Lineh);
+			fillellipse(screen, p, sr, sr, display->black, ZP);
+		}else if(goban[i] == White){
+			p = Pt(px + i % sgoban * scale * Linew,
+				py + i / sgoban * scale * Lineh);
+			fillellipse(screen, p, sr, sr, display->white, ZP);
 		}
 	}
 }
