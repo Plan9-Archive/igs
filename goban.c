@@ -62,7 +62,8 @@ double scale;
 void drawgoban(void);
 int px2move(Point);
 int playmove(int, int);
-void delmove(void);
+void undomove(void);
+void delmove(int);
 
 void
 usage(void)
@@ -110,7 +111,7 @@ main(int argc, char *argv[])
 		}else if(m.buttons&2){
 			switch(emenuhit(2, &m, &mmenu)){
 			case 0:
-				delmove();
+				undomove();
 				drawgoban();
 			}
 		}else if(m.buttons&4){
@@ -253,7 +254,7 @@ playmove(int turn, int move)
 }
 
 void
-delmove(void)
+undomove(void)
 {
 	int move;
 	Mouse m;
@@ -267,11 +268,17 @@ delmove(void)
 			break;
 		}else if(m.buttons&2){
 			move = px2move(m.xy);
-			goban[move] = 0;
+			delmove(move);
 			break;
 		}
 	}
 	esetcursor(nil);
+}
+
+void
+delmove(int move)
+{
+	goban[move] = 0;
 }
 
 void
