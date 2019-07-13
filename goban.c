@@ -103,7 +103,8 @@ drawgoban(void)
 		}else if(goban[i] == White){
 			p = Pt(px + i % sgoban * scale * Linew,
 				py + i / sgoban * scale * Lineh);
-			fillellipse(screen, p, sr, sr, display->white, ZP);
+			ellipse(screen, p, sr, sr, 0, display->black, ZP);
+			fillellipse(screen, p, sr-1, sr-1, display->white, ZP);
 		}
 	}
 }
