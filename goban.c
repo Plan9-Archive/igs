@@ -15,8 +15,10 @@ enum
 	Stonediam = 225
 };
 
+int gsize = 19; /* Goban size, gsize x gsize. */
+
 void
-drawgoban(int gsize)
+drawgoban(void)
 {
 	int i, j;
 	int l, hr;
@@ -84,7 +86,7 @@ main(void)
 		sysfatal("initgoban failed: %r");
 	einit(Emouse);
 
-	drawgoban(19);
+	drawgoban();
 
 	for(;;m = emouse())
 		if(m.buttons)
@@ -99,4 +101,5 @@ eresized(int new)
 	if(new)
 		if(getwindow(display, Refnone) < 0)
 			sysfatal("eresized failed: %r");
+	drawgoban();
 }
