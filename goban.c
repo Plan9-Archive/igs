@@ -32,6 +32,7 @@ enum
 
 char *mbuttons[] = 
 {
+	"pass",
 	"undo",
 	0
 };
@@ -106,6 +107,10 @@ main(int argc, char *argv[])
 		}else if(m.buttons&2){
 			switch(emenuhit(2, &m, &mmenu)){
 			case 0:
+				playmove(turn, Pass);
+				turn *= -1;
+				break;
+			case 1:
 				undomove(-1);
 				drawgoban();
 			}

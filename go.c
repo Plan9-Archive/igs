@@ -39,6 +39,14 @@ playmove(int turn, int move)
 	int mlib, nnbr, ncap, cap, newgrp;
 	int nbr[4], oppogrp[4];
 
+	if(move == Pass){
+		if(ko != -1){
+			goban[ko] = Empty;
+			ko = -1;
+		}
+		return 0;
+	}
+
 	if(move< 0 || move > sgoban * sgoban){
 		werrstr("Move is out of bounds.");
 		return -1;

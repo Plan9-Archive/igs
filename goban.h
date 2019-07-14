@@ -1,6 +1,7 @@
 enum
 {
-	White = -1,
+	Pass = -2,
+	White,
 	Empty,
 	Black,
 	Marked,
