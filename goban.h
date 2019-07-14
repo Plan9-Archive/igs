@@ -16,6 +16,6 @@ int nwhitecaptured;
 
 
 void initgoban(void);
-int playmove(int, int);
+int playmove(int*, int);
 int undomove(int);
 int pickundo(void);

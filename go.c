@@ -33,13 +33,14 @@ initgoban(void)
 }
 
 int
-playmove(int turn, int move)
+playmove(int *turn, int move)
 {
 	int i;
 	int mlib, nnbr, ncap, cap, newgrp;
 	int nbr[4], oppogrp[4];
 
 	if(move == Pass){
+		*turn *= -1;
 		if(ko != -1){
 			goban[ko] = Empty;
 			ko = -1;
@@ -73,7 +74,7 @@ playmove(int turn, int move)
 			|| goban[nbr[i]] == Ko)
 		{
 			mlib++;
-		}else if(nbr[i] != -1 && goban[nbr[i]] == turn){
+		}else if(nbr[i] != -1 && goban[nbr[i]] == *turn){
 			nnbr += liberty[group[nbr[i]]] - 1;
 		}else if(nbr[i] != -1 && liberty[group[nbr[i]]] == 1){
 			mlib++;
@@ -88,7 +89,7 @@ playmove(int turn, int move)
 		return -1;
 	}
 
-	goban[move] = turn;
+	goban[move] = *turn;
 	newgrp = newgroup();
 	if(newgrp < 0){
 		print("How???: %r\n");
@@ -103,7 +104,7 @@ playmove(int turn, int move)
 			liberty[oppogrp[i]]--;
 	}
 	for(i = 0; i < 4; i++){
-		if(nbr[i] != -1 && goban[nbr[i]] == turn)
+		if(nbr[i] != -1 && goban[nbr[i]] == *turn)
 			mergegroup(newgrp, group[nbr[i]]);
 	}
 
@@ -115,6 +116,7 @@ playmove(int turn, int move)
 		goban[cap] = Ko;
 		ko = cap;
 	}
+	*turn *= -1;
 	return 0;
 }
 

@@ -98,17 +98,15 @@ main(int argc, char *argv[])
 				print("error: %r\n");
 				continue;
 			}
-			if(playmove(turn, move) == -1){
+			if(playmove(&turn, move) == -1){
 				print("error: %r\n");
 				continue;
 			}
-			turn *= -1;
 			drawgoban();
 		}else if(m.buttons&2){
 			switch(emenuhit(2, &m, &mmenu)){
 			case 0:
-				playmove(turn, Pass);
-				turn *= -1;
+				playmove(&turn, Pass);
 				break;
 			case 1:
 				undomove(-1);
