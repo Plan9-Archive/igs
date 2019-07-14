@@ -13,7 +13,8 @@ int sgoban; /* Goban size, sgoban x sgoban. */
 int goban[Maxgobansize * Maxgobansize] = {Empty};
 int nblackcaptured;
 int nwhitecaptured;
-
+int npass;
+int isgameover;
 
 void initgoban(void);
 int playmove(int*, int);

@@ -91,7 +91,7 @@ main(int argc, char *argv[])
 	drawgoban();
 
 	turn = Black;
-	for(;; m = emouse()){
+	for(; isgameover == 0; m = emouse()){
 		if(m.buttons&1){
 			move = px2move(m.xy);
 			if(move == -1){

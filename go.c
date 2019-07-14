@@ -26,6 +26,8 @@ initgoban(void)
 	nblackcaptured = 0;
 	nwhitecaptured = 0;
 	ko = -1;
+	npass = 0;
+	isgameover = 0;
 	for(i = 0; i < sgoban * sgoban; i++){
 		group[i] = -1;
 		liberty[i] = -1;
@@ -41,12 +43,17 @@ playmove(int *turn, int move)
 
 	if(move == Pass){
 		*turn *= -1;
+		npass++;
 		if(ko != -1){
 			goban[ko] = Empty;
 			ko = -1;
 		}
+		if(npass == 3)
+			isgameover = 1;
 		return 0;
 	}
+	if(npass > 0)
+		npass--;
 
 	if(move< 0 || move > sgoban * sgoban){
 		werrstr("Move is out of bounds.");
