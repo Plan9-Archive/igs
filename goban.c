@@ -34,6 +34,7 @@ char *mbuttons[] =
 {
 	"pass",
 	"undo",
+	"resign",
 	0
 };
 
@@ -111,11 +112,15 @@ main(int argc, char *argv[])
 			case 1:
 				undomove(-1);
 				drawgoban();
+				break;
+			case 2:
+				isgameover = 1;
+				print("Winner: %d\n", -turn);
 			}
 		}else if(m.buttons&4){
 			switch(emenuhit(3, &m, &rmenu)){
 			case 0:
-				exits(0);
+				break;
 			}
 		}
 	}
