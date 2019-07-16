@@ -1,9 +1,9 @@
 #include <u.h>
 #include <libc.h>
-
 #include "goban.h"
 
-int ko;
+static int ko;
+
 /* group[coord] = group to which coord belongs.
  * liberty[grp] = number of liberties of group grp.
  * groupcounter: next new group index in liberty.

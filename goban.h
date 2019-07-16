@@ -1,5 +1,4 @@
-enum
-{
+enum{
 	Pass = -2,
 	White,
 	Empty,
@@ -9,12 +8,12 @@ enum
 	Maxgobansize = 19
 };
 
-int sgoban; /* Goban size, sgoban x sgoban. */
-int goban[Maxgobansize * Maxgobansize] = {Empty};
-int nblackcaptured;
-int nwhitecaptured;
-int npass;
-int isgameover;
+extern int sgoban;
+extern int goban[];
+extern int nblackcaptured;
+extern int nwhitecaptured;
+extern int npass;
+extern int isgameover;
 
 void initgoban(void);
 int playmove(int*, int);
