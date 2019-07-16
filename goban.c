@@ -196,8 +196,10 @@ drawgoban(void)
 		hoshi[1] = 4;
 		hoshi[2] = 6;
 		break;
+	default:
+		hoshi[0] = 0;
 	}
-	for(i = 0; i < 3; i++){
+	for(i = 0; i < 3 && hoshi[0] != 0; i++){
 		for(j = 0; j < 3; j++){
 			p = Pt(ogoban.x + (int)(hoshi[i] * scale * Linew),
 				ogoban.y + (int)(hoshi[j] * scale * Lineh));
