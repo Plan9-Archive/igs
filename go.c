@@ -106,10 +106,8 @@ playmove(int *turn, int move)
 	liberty[newgrp] = mlib;
 
 	/* Apply the liberty changes to neighbouring groups. */
-	for(i = 0; i < 4; i++){
-		if(oppogrp[i] != -1)
-			liberty[oppogrp[i]]--;
-	}
+	for(i = 0; i < 4 && oppogrp[i] != -1; i++)
+		liberty[oppogrp[i]]--;
 	for(i = 0; i < 4; i++){
 		if(nbr[i] != -1 && goban[nbr[i]] == *turn)
 			mergegroup(newgrp, group[nbr[i]]);
@@ -177,13 +175,9 @@ capture(int grp)
 			group[i] = -1;
 		}
 	}
-	for(i = 0; i < lsize; i++){
-		if(oppogrp[i] == -1){
-			break;
-		}else{
-			liberty[oppogrp[i]]++;
-		}
-	}
+	for(i = 0; i < lsize && oppogrp[i] != -1; i++)
+		liberty[oppogrp[i]]++;
+
 	return ncap;
 }
 
@@ -289,10 +283,8 @@ undomove(int move)
 		for(i = 0; i < 4; i++)
 			push(group[nbr[i]], nbrgrp, 4);
 	}
-	for(i = 0; i < 4; i++){
-		if(nbrgrp[i] == -1)
-			break;
+	for(i = 0; i < 4 && nbrgrp[i] != -1; i++)
 		updatelib(nbrgrp[i]);
-	}
+
 	return 0;
 }
