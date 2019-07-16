@@ -120,6 +120,7 @@ main(int argc, char *argv[])
 		}else if(m.buttons&4){
 			switch(emenuhit(3, &m, &rmenu)){
 			case 0:
+				isgameover = 1;
 				break;
 			}
 		}
