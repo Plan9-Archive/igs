@@ -48,7 +48,7 @@ playmove(int *turn, int move)
 			goban[ko] = Empty;
 			ko = -1;
 		}
-		if(npass == 3)
+		if(npass == 2)
 			isgameover = 1;
 		return 0;
 	}
