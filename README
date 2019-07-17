@@ -1,13 +1,17 @@
 Play Go in plan9front, localy or on IGS.
+Automatic scoring has turned out to be much harder than initially thought,
+detecting dead groups is complicated. I will probably add a version with
+consensus: players themselves remove the dead groups.
 
 The planned roadmap is:
 [x] Display a goban on which one can place stones.
-[ ] Go engine.
+[x] Go engine.
 [ ] IGS telnet client.
 
 Options:
 [ ] GTP?
 [ ] Read & write SGF?
+[ ] Scoring?
 
 files:
 goban.c main file, manages the ui.
