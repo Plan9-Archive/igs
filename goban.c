@@ -53,16 +53,6 @@ Cursor sightcursor =
 	0x21, 0x84, 0x31, 0x8C, 0x0F, 0xF0, 0x00, 0x00}
 };
 
-int sgoban = Maxgobansize;
-int goban[Maxgobansize * Maxgobansize] = {0};
-int nblackcaptured;
-int nwhitecaptured;
-int npass;
-int isgameover;
-
-static Point ogoban; /* Origin of the lines of the goban. */
-static double scale;
-
 static void drawgoban(void);
 static int px2move(Point);
 
@@ -76,9 +66,10 @@ usage(void)
 void
 main(int argc, char *argv[])
 {
-	int move, turn;
+	int move, sgoban;
 	Mouse m;
 
+	sgoban = Maxgobansize;
 	ARGBEGIN {
 	case 's':
 		sgoban = atoi(EARGF(usage()));
@@ -93,10 +84,10 @@ main(int argc, char *argv[])
 		sysfatal("initgoban failed: %r");
 	einit(Emouse);
 
-	initgoban();
+	Game *g;
+	initgoban(g, sgoban);
 	drawgoban();
 
-	turn = Black;
 	for(; isgameover == 0; m = emouse()){
 		if(m.buttons&1){
 			move = px2move(m.xy);

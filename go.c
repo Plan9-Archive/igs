@@ -2,15 +2,6 @@
 #include <libc.h>
 #include "goban.h"
 
-static int ko;
-
-/* group[coord] = group to which coord belongs.
- * liberty[grp] = number of liberties of group grp.
- * groupcounter: next new group index in liberty.
- */
-int group[Maxgobansize * Maxgobansize];
-int liberty[Maxgobansize * Maxgobansize];
-
 void listnbr(int, int*);
 int capture(int);
 void push(int, int*, int);
@@ -19,18 +10,19 @@ void mergegroup(int, int);
 void updatelib(int);
 
 void
-initgoban(void)
+initgoban(Game *g, int sgoban)
 {
 	int i;
 
-	nblackcaptured = 0;
-	nwhitecaptured = 0;
-	ko = -1;
-	npass = 0;
-	isgameover = 0;
+	g->sgoban = sgoban;
+	g->turn = Black;
+	g->npass = 0;
+	g->nblackcaptured = g->nwhitecaptured = 0;
+	g->ko = -1;
+	g->isgameover = 0;
 	for(i = 0; i < sgoban * sgoban; i++){
-		group[i] = -1;
-		liberty[i] = -1;
+		g->group[i] = -1;
+		g->liberty[i] = -1;
 	}
 }
 
