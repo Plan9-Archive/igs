@@ -67,13 +67,14 @@ usage(void)
 void
 main(int argc, char *argv[])
 {
-	int move, sgoban;
+	int move;
 	Mouse m;
+	Goban *g;
 
-	sgoban = Maxgobansize;
+	g->sgoban = Maxgobansize;
 	ARGBEGIN {
 	case 's':
-		sgoban = atoi(EARGF(usage()));
+		g->sgoban = atoi(EARGF(usage()));
 		break;
 	case 'h':
 		usage();
@@ -85,8 +86,7 @@ main(int argc, char *argv[])
 		sysfatal("initgoban failed: %r");
 	einit(Emouse);
 
-	Game *g;
-	initgoban(g, sgoban);
+	initgoban(g);
 	drawgoban();
 
 	for(; isgameover == 0; m = emouse()){

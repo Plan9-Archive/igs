@@ -1,5 +1,6 @@
 #include <u.h>
 #include <libc.h>
+#include <draw.h>
 #include "goban.h"
 
 void listnbr(int, int*);
@@ -10,11 +11,10 @@ void mergegroup(int, int);
 void updatelib(int);
 
 void
-initgoban(Game *g, int sgoban)
+initgoban(Goban *g)
 {
 	int i;
 
-	g->sgoban = sgoban;
 	g->turn = Black;
 	g->npass = 0;
 	g->nblackcaptured = g->nwhitecaptured = 0;

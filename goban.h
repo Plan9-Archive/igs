@@ -8,8 +8,8 @@ enum{
 	Maxgobansize = 19
 };
 
-typedef struct Game Game;
-struct Game
+typedef struct Goban Goban;
+struct Goban
 {
 	int sgoban;
 	int turn;
@@ -25,7 +25,7 @@ struct Game
 	double scale;
 };
 
-void initgoban(void);
+void initgoban(Goban*);
 int playmove(int*, int);
 int undomove(int);
 int pickundo(void);
