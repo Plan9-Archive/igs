@@ -21,6 +21,7 @@ char *mbuttons[] =
 	"pass",
 	"undo",
 	"resign",
+	"mark",
 	0
 };
 
@@ -112,6 +113,10 @@ main(int argc, char *argv[])
 			case 2:
 				isgameover = 1;
 				print("Winner: %d\n", -turn);
+				break;
+			case 3:
+				markstone();
+				drawgoban();
 			}
 		}else if(m.buttons&4){
 			switch(emenuhit(3, &m, &rmenu)){
@@ -201,15 +206,32 @@ drawgoban(void)
 	/* Draw stones. */
 	sr = scale * Stonediam / 2;
 	for(i = 0; i < sgoban *  sgoban; i++){
-		if(goban[i] == Black){
+		switch(goban[i]){
+		case Black:
 			p = Pt(ogoban.x + i % sgoban * scale * Linew,
 				ogoban.y + i / sgoban * scale * Lineh);
 			fillellipse(screen, p, sr, sr, display->black, ZP);
-		}else if(goban[i] == White){
+			break;
+		case White:
 			p = Pt(ogoban.x + i % sgoban * scale * Linew,
 				ogoban.y + i / sgoban * scale * Lineh);
 			ellipse(screen, p, sr, sr, 0, display->black, ZP);
 			fillellipse(screen, p, sr-1, sr-1, display->white, ZP);
+			break;
+		case Black + Marked:
+			p = Pt(ogoban.x + i % sgoban * scale * Linew,
+				ogoban.y + i / sgoban * scale * Lineh);
+			bg = allocimage(display, Rect(0, 0, 1, 1), RGB24, 1, DDarkyellow);
+			fillellipse(screen, p, sr, sr, bg, ZP);
+			freeimage(bg);
+			break;
+		case White + Marked;
+			p = Pt(ogoban.x + i % sgoban * scale * Linew,
+				ogoban.y + i / sgoban * scale * Lineh);
+			bg = allocimage(display, Rect(0, 0, 1, 1), RGB24, 1, DPaleyellow);
+			fillellipse(screen, p, sr, sr, bg, ZP);
+			freeimage(bg);
+			break;
 		}
 	}
 }
@@ -255,6 +277,27 @@ pickundo(void)
 	}
 	esetcursor(nil);
 	return move;
+}
+
+static void
+markstone(void)
+{
+	Mouse m;
+
+	esetcursor(&sightcursor);
+	for(;; m = emouse()){
+		/* This event is sent when the button is released. */
+		if(m.buttons&1 && m.buttons&2 && m.buttons&4){
+			continue;
+		}else if(m.buttons&1 || m.buttons&4){
+			move = -1;
+			break;
+		}else if(m.buttons&2){
+			goban[px2move(m.xy)] += Marked;
+			break;
+		}
+	}
+	esetcursor(nil);
 }
 
 void
