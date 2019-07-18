@@ -16,6 +16,10 @@ enum{
 	Stonediam = 225
 };
 
+enum{
+	DGoban = 0xD79C5EFF
+};
+
 char *mbuttons[] =
 {
 	"pass",
@@ -159,7 +163,7 @@ drawgoban(void)
 	poly[1] = Pt(r.max.x, r.min.y);
 	poly[2] = r.max;
 	poly[3] = Pt(r.min.x, r.max.y);
-	bg = allocimage(display, Rect(0, 0, 1, 1), RGB24, 1, 0xD79C5EFF);
+	bg = allocimage(display, Rect(0, 0, 1, 1), RGB24, 1, DGoban);
 	fillpoly(screen, poly, 4, ~0, bg, ZP);
 	freeimage(bg);
 
@@ -224,14 +228,14 @@ drawgoban(void)
 		case Black + Marked:
 			p = Pt(ogoban.x + i % sgoban * scale * Linew,
 				ogoban.y + i / sgoban * scale * Lineh);
-			bg = allocimage(display, Rect(0, 0, 1, 1), RGB24, 1, DDarkyellow);
+			bg = allocimagemix(display, DBlack, DGoban);
 			fillellipse(screen, p, sr, sr, bg, ZP);
 			freeimage(bg);
 			break;
 		case White + Marked:
 			p = Pt(ogoban.x + i % sgoban * scale * Linew,
 				ogoban.y + i / sgoban * scale * Lineh);
-			bg = allocimage(display, Rect(0, 0, 1, 1), RGB24, 1, DPaleyellow);
+			bg = allocimagemix(display, DWhite, DGoban);
 			fillellipse(screen, p, sr, sr, bg, ZP);
 			freeimage(bg);
 		}
