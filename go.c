@@ -3,6 +3,17 @@
 #include <draw.h>
 #include "goban.h"
 
+int sgoban;
+int turn;
+int npass;
+int nblackcaptured;
+int nwhitecaptured;
+int ko;
+int isgameover;
+int goban[Maxgobansize * Maxgobansize];
+int group[Maxgobansize * Maxgobansize];
+int liberty[Maxgobansize * Maxgobansize];
+
 void listnbr(int, int*);
 int capture(int);
 void push(int, int*, int);
@@ -11,30 +22,33 @@ void mergegroup(int, int);
 void updatelib(int);
 
 void
-initgoban(Goban *g)
+initgoban(int sg)
 {
 	int i;
 
-	g->turn = Black;
-	g->npass = 0;
-	g->nblackcaptured = g->nwhitecaptured = 0;
-	g->ko = -1;
-	g->isgameover = 0;
+	sgoban = sg;
+	turn = Black;
+	npass = 0;
+	nblackcaptured = 0;
+	nwhitecaptured = 0;
+	ko = -1;
+	isgameover = 0;
 	for(i = 0; i < sgoban * sgoban; i++){
-		g->group[i] = -1;
-		g->liberty[i] = -1;
+		goban[i] = 0;
+		group[i] = -1;
+		liberty[i] = -1;
 	}
 }
 
 int
-playmove(int *turn, int move)
+playmove(int move)
 {
 	int i;
 	int mlib, nnbr, ncap, cap, newgrp;
 	int nbr[4], oppogrp[4];
 
 	if(move == Pass){
-		*turn *= -1;
+		turn *= -1;
 		npass++;
 		if(ko != -1){
 			goban[ko] = Empty;
@@ -73,7 +87,7 @@ playmove(int *turn, int move)
 			|| goban[nbr[i]] == Ko)
 		{
 			mlib++;
-		}else if(nbr[i] != -1 && goban[nbr[i]] == *turn){
+		}else if(nbr[i] != -1 && goban[nbr[i]] == turn){
 			nnbr += liberty[group[nbr[i]]] - 1;
 		}else if(nbr[i] != -1 && liberty[group[nbr[i]]] == 1){
 			mlib++;
@@ -88,7 +102,7 @@ playmove(int *turn, int move)
 		return -1;
 	}
 
-	goban[move] = *turn;
+	goban[move] = turn;
 	newgrp = newgroup();
 	if(newgrp < 0){
 		print("How???: %r\n");
@@ -101,7 +115,7 @@ playmove(int *turn, int move)
 	for(i = 0; i < 4 && oppogrp[i] != -1; i++)
 		liberty[oppogrp[i]]--;
 	for(i = 0; i < 4; i++){
-		if(nbr[i] != -1 && goban[nbr[i]] == *turn)
+		if(nbr[i] != -1 && goban[nbr[i]] == turn)
 			mergegroup(newgrp, group[nbr[i]]);
 	}
 
@@ -113,7 +127,7 @@ playmove(int *turn, int move)
 		goban[cap] = Ko;
 		ko = cap;
 	}
-	*turn *= -1;
+	turn *= -1;
 	return 0;
 }
 
@@ -193,7 +207,7 @@ push(int val, int *l, int lsize)
 }
 
 int
-newgroup(void)
+newgroup()
 {
 	int i;
 

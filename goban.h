@@ -3,29 +3,23 @@ enum{
 	White,
 	Empty,
 	Black,
-	Marked,
 	Ko,
+	Marked = 10,
 	Maxgobansize = 19
 };
 
-typedef struct Goban Goban;
-struct Goban
-{
-	int sgoban;
-	int turn;
-	int npass;
-	int nblackcaptured;
-	int nwhitecaptured;
-	int ko;
-	int isgameover;
-	int goban[Maxgobansize * Maxgobansize];
-	int group[Maxgobansize * Maxgobansize]; /* group[coord] */
-	int liberty[Maxgobansize * Maxgobansize]; /* liberties[group] */
-	Point ogoban; /* Origin of the lines of the goban. */
-	double scale;
-};
+extern int sgoban;
+extern int turn;
+extern int npass;
+extern int nblackcaptured;
+extern int nwhitecaptured;
+extern int ko;
+extern int isgameover;
+extern int goban[Maxgobansize * Maxgobansize];
+extern int group[Maxgobansize * Maxgobansize]; /* group[coord] */
+extern int liberty[Maxgobansize * Maxgobansize]; /* liberties[group] */
 
-void initgoban(Goban*);
-int playmove(int*, int);
+void initgoban(int);
+int playmove(int);
 int undomove(int);
 int pickundo(void);

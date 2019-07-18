@@ -54,8 +54,12 @@ Cursor sightcursor =
 	0x21, 0x84, 0x31, 0x8C, 0x0F, 0xF0, 0x00, 0x00}
 };
 
+static Point ogoban; /* Origin of the lines of the goban. */
+static double scale;
+
 static void drawgoban(void);
 static int px2move(Point);
+static void markstone(void);
 
 static void
 usage(void)
@@ -67,14 +71,13 @@ usage(void)
 void
 main(int argc, char *argv[])
 {
-	int move;
+	int move, sg;
 	Mouse m;
-	Goban *g;
 
-	g->sgoban = Maxgobansize;
+	sg = Maxgobansize;
 	ARGBEGIN {
 	case 's':
-		g->sgoban = atoi(EARGF(usage()));
+		sg = atoi(EARGF(usage()));
 		break;
 	case 'h':
 		usage();
@@ -83,10 +86,10 @@ main(int argc, char *argv[])
 		usage();
 
 	if(initdraw(0, 0, "goban") < 0)
-		sysfatal("initgoban failed: %r");
+		sysfatal("initdraw failed: %r");
 	einit(Emouse);
 
-	initgoban(g);
+	initgoban(sg);
 	drawgoban();
 
 	for(; isgameover == 0; m = emouse()){
@@ -96,7 +99,7 @@ main(int argc, char *argv[])
 				print("error: %r\n");
 				continue;
 			}
-			if(playmove(&turn, move) == -1){
+			if(playmove(move) == -1){
 				print("error: %r\n");
 				continue;
 			}
@@ -104,7 +107,7 @@ main(int argc, char *argv[])
 		}else if(m.buttons&2){
 			switch(emenuhit(2, &m, &mmenu)){
 			case 0:
-				playmove(&turn, Pass);
+				playmove(Pass);
 				break;
 			case 1:
 				undomove(-1);
@@ -225,13 +228,12 @@ drawgoban(void)
 			fillellipse(screen, p, sr, sr, bg, ZP);
 			freeimage(bg);
 			break;
-		case White + Marked;
+		case White + Marked:
 			p = Pt(ogoban.x + i % sgoban * scale * Linew,
 				ogoban.y + i / sgoban * scale * Lineh);
 			bg = allocimage(display, Rect(0, 0, 1, 1), RGB24, 1, DPaleyellow);
 			fillellipse(screen, p, sr, sr, bg, ZP);
 			freeimage(bg);
-			break;
 		}
 	}
 }
@@ -282,6 +284,7 @@ pickundo(void)
 static void
 markstone(void)
 {
+	int move;
 	Mouse m;
 
 	esetcursor(&sightcursor);
@@ -290,11 +293,22 @@ markstone(void)
 		if(m.buttons&1 && m.buttons&2 && m.buttons&4){
 			continue;
 		}else if(m.buttons&1 || m.buttons&4){
-			move = -1;
 			break;
 		}else if(m.buttons&2){
-			goban[px2move(m.xy)] += Marked;
-			break;
+			move = px2move(m.xy);
+			switch(goban[move]){
+			case Black:
+			case White:
+				esetcursor(nil);
+				goban[move] += Marked;
+				return;
+				break;
+			case Black + Marked:
+			case White + Marked:
+				esetcursor(nil);
+				goban[move] -= Marked;
+				return;
+			}
 		}
 	}
 	esetcursor(nil);
