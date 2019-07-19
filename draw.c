@@ -168,11 +168,13 @@ markgroup(void)
 			switch(goban[move]){
 			case Black:
 			case White:
+				/* should mark the entire group */
 				goban[move] += Marked;
 				return;
 				break;
 			case Black + Marked:
 			case White + Marked:
+				/* Use telnet undo command */
 				goban[move] -= Marked;
 				return;
 			}
