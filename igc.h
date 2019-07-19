@@ -24,4 +24,4 @@ void drawgoban(void);
 int px2move(Point);
 int playmove(int);
 int undomove(int);
-void markstone(void);
+void markdeadgroups(void);

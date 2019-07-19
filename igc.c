@@ -90,7 +90,7 @@ main(int argc, char *argv[])
 				print("Winner: %d\n", -turn);
 				break;
 			case 3:
-				markstone();
+				markdeadgroups();
 				drawgoban();
 			}
 		}else if(m.buttons&4){
@@ -130,6 +130,37 @@ coord2move(char* coord)
 		move = coord[0] - 'A' - 1;
 	move += (19 - atoi(coord + 1)) * sgoban;
 	return move;
+}
+
+void
+markdeadgroups(void)
+{
+	int move;
+	Mouse m;
+
+	for(;; m = emouse()){
+		/* This event is sent when the button is released. */
+		if(m.buttons&1 && m.buttons&2 && m.buttons&4){
+			continue;
+		}else if(m.buttons&2){
+			
+		}else if(m.buttons&1){
+			move = px2move(m.xy);
+			switch(goban[move]){
+			case Black:
+			case White:
+				/* should mark the entire group */
+				goban[move] += Marked;
+				return;
+				break;
+			case Black + Marked:
+			case White + Marked:
+				/* Use telnet undo command */
+				goban[move] -= Marked;
+				return;
+			}
+		}
+	}
 }
 
 void

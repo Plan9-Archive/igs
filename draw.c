@@ -149,35 +149,3 @@ px2move(Point px)
 	p.y /= scale * Lineh;
 	return p.y * sgoban + p.x;
 }
-
-/* TODO: mark group & split pick/mark */
-void
-markgroup(void)
-{
-	int move;
-	Mouse m;
-
-	for(;; m = emouse()){
-		/* This event is sent when the button is released. */
-		if(m.buttons&1 && m.buttons&2 && m.buttons&4){
-			continue;
-		}else if(m.buttons&1 || m.buttons&4){
-			break;
-		}else if(m.buttons&2){
-			move = px2move(m.xy);
-			switch(goban[move]){
-			case Black:
-			case White:
-				/* should mark the entire group */
-				goban[move] += Marked;
-				return;
-				break;
-			case Black + Marked:
-			case White + Marked:
-				/* Use telnet undo command */
-				goban[move] -= Marked;
-				return;
-			}
-		}
-	}
-}
