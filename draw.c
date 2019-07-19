@@ -1,5 +1,6 @@
 #include <u.h>
 #include <libc.h>
+#include <stdio.h>
 #include <draw.h>
 #include <event.h>
 #include "igc.h"
@@ -22,17 +23,19 @@ enum{
 static Point ogoban; /* Origin of the lines of the goban. */
 static double scale;
 
-void
+int
 drawgoban(void)
 {
 	int i, j;
 	int l, hr, sr;
+	char s[Maxgobansize]; /* Just need a length */
 	int hoshi[3];
 	Point o;
 	Point p, q;
 	Rectangle r;
 	Point poly[4];
 	Image *bg;
+	Font *font;
 
 	o = screen->r.min;
 	if(Dx(screen->r) * Gobanh < Dy(screen->r) * Gobanw){
@@ -114,6 +117,16 @@ drawgoban(void)
 			break;
 		}
 	}
+
+	/* Draw text: turn, prisonners, later on byo-yomi & time. */
+	if((font = openfont(display, "/lib/font/bit/dejavu/unicode.18.font")) == nil){
+		werrstr("Could not open font.");
+		return -1;
+	}
+	p = addpt(ogoban, Pt(0, scale * Lineh * sgoban));
+	sprintf(s, "To play: %s", turn == Black ? "Black " : "White ");
+	stringbg(screen, p, display->black, ZP, font, s, display->white, ZP);
+	return 0;
 }
 
 /* Pixel coordinates to Go move. */

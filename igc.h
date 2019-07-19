@@ -20,7 +20,7 @@ extern int group[Maxgobansize * Maxgobansize]; /* group[coord] */
 extern int liberty[Maxgobansize * Maxgobansize]; /* liberties[group] */
 
 void initgoban(int);
-void drawgoban(void);
+int drawgoban(void);
 int px2move(Point);
 int playmove(int);
 int undomove(int);
