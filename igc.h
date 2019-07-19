@@ -24,3 +24,4 @@ void drawgoban(void);
 int px2move(Point);
 int playmove(int);
 int undomove(int);
+int capture(int);

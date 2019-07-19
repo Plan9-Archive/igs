@@ -14,12 +14,11 @@ int goban[Maxgobansize * Maxgobansize];
 int group[Maxgobansize * Maxgobansize];
 int liberty[Maxgobansize * Maxgobansize];
 
-void listnbr(int, int*);
-int capture(int);
-void push(int, int*, int);
-int newgroup(void);
-void mergegroup(int, int);
-void updatelib(int);
+static void listnbr(int, int*);
+static void push(int, int*, int);
+static int newgroup(void);
+static void mergegroup(int, int);
+static void updatelib(int);
 
 void
 initgoban(int sg)
@@ -131,7 +130,7 @@ playmove(int move)
 	return 0;
 }
 
-void
+static void
 listnbr(int move, int nbr[4])
 {
 	int i;
@@ -190,7 +189,7 @@ capture(int grp)
 /* Push val in a list l implemented with an array of size lsize.
  * Note that the array has to be initialized to -1.
  */
-void
+static void
 push(int val, int *l, int lsize)
 {
 	int i;
@@ -206,7 +205,7 @@ push(int val, int *l, int lsize)
 	exits("List full.");
 }
 
-int
+static int
 newgroup()
 {
 	int i;
@@ -220,7 +219,7 @@ newgroup()
 }
 
 /* Merge h in g. */
-void
+static void
 mergegroup(int g, int h)
 {
 	int i;
@@ -237,7 +236,7 @@ mergegroup(int g, int h)
 }	
 
 /* Update liberties of group g. */
-void
+static void
 updatelib(int g)
 {
 	int i, j;
