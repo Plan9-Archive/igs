@@ -1,7 +1,7 @@
 #include <u.h>
 #include <libc.h>
 #include <draw.h>
-#include "goban.h"
+#include "igc.h"
 
 int sgoban;
 int turn;

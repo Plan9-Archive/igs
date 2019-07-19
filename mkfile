@@ -1,10 +1,10 @@
 </$objtype/mkfile
 
 BIN=/$objtype/bin/games
-TARG=goban
-HFILES=goban.h
+TARG=igc
+HFILES=igc.h
 OFILES=\
-	goban.$O\
+	igc.$O\
 	go.$O\
 
 </sys/src/cmd/mkone
