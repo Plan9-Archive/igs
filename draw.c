@@ -126,6 +126,13 @@ drawgoban(void)
 	p = addpt(ogoban, Pt(0, scale * Lineh * sgoban));
 	sprintf(s, "To play: %s", turn == Black ? "Black " : "White ");
 	stringbg(screen, p, display->black, ZP, font, s, display->white, ZP);
+	p = addpt(p, Pt(0, font->height));
+	sprintf(s, "Black prisonners: %d", nblackcaptured);
+	stringbg(screen, p, display->black, ZP, font, s, display->white, ZP);
+	p = addpt(p, Pt(0, font->height));
+	sprintf(s, "White prisonners: %d", nwhitecaptured);
+	stringbg(screen, p, display->black, ZP, font, s, display->white, ZP);
+
 	return 0;
 }
 
