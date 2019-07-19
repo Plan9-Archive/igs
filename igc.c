@@ -115,8 +115,7 @@ main(int argc, char *argv[])
 				playmove(Pass);
 				break;
 			case 1:
-				undomove(-1);
-				drawgoban();
+				/* call igs undoplease */
 				break;
 			case 2:
 				isgameover = 1;
@@ -261,29 +260,6 @@ px2move(Point px)
 	p.x /= scale * Linew;
 	p.y /= scale * Lineh;
 	return p.y * sgoban + p.x;
-}
-
-int
-pickundo(void)
-{
-	int move;
-	Mouse m;
-
-	esetcursor(&sightcursor);
-	for(;; m = emouse()){
-		/* This event is sent when the button is released. */
-		if(m.buttons&1 && m.buttons&2 && m.buttons&4){
-			continue;
-		}else if(m.buttons&1 || m.buttons&4){
-			move = -1;
-			break;
-		}else if(m.buttons&2){
-			move = px2move(m.xy);
-			break;
-		}
-	}
-	esetcursor(nil);
-	return move;
 }
 
 static void
