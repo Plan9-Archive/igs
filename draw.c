@@ -20,31 +20,6 @@ enum{
 	DGoban = 0xD79C5EFF
 };
 
-char *mbuttons[] =
-{
-	"pass",
-	"undo",
-	"resign",
-	"mark",
-	0
-};
-
-char *rbuttons[] =
-{
-	"exit",
-	0
-};
-
-Menu mmenu =
-{
-	mbuttons,
-};
-
-Menu rmenu =
-{
-	rbuttons,
-};
-
 Cursor sightcursor =
 {
 	{-7, -7},
@@ -61,17 +36,8 @@ Cursor sightcursor =
 static Point ogoban; /* Origin of the lines of the goban. */
 static double scale;
 
-static void drawgoban(void);
 static int px2move(Point);
 static void markstone(void);
-
-static void
-usage(void)
-{
-	fprint(2, "Internet Go Client\n");
-	fprint(2, "usage: %s [-s gobansize]\n", argv0);
-	exits("usage");
-}
 
 void
 main(int argc, char *argv[])
