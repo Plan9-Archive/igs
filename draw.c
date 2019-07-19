@@ -1,8 +1,8 @@
 #include <u.h>
 #include <libc.h>
 #include <draw.h>
-#include <event.h>
 #include <cursor.h>
+#include <event.h>
 #include "igc.h"
 
 /* Traditional dimensions in tenth of mm */
@@ -36,73 +36,7 @@ Cursor sightcursor =
 static Point ogoban; /* Origin of the lines of the goban. */
 static double scale;
 
-static int px2move(Point);
-static void markstone(void);
-
 void
-main(int argc, char *argv[])
-{
-	int move, sg;
-	Mouse m;
-
-	sg = Maxgobansize;
-	ARGBEGIN {
-	case 's':
-		sg = atoi(EARGF(usage()));
-		break;
-	case 'h':
-		usage();
-	} ARGEND
-	if(argc != 0)
-		usage();
-
-	if(initdraw(0, 0, "goban") < 0)
-		sysfatal("initdraw failed: %r");
-	einit(Emouse);
-
-	initgoban(sg);
-	drawgoban();
-
-	for(; isgameover == 0; m = emouse()){
-		if(m.buttons&1){
-			move = px2move(m.xy);
-			if(move == -1){
-				print("error: %r\n");
-				continue;
-			}
-			if(playmove(move) == -1){
-				print("error: %r\n");
-				continue;
-			}
-			drawgoban();
-		}else if(m.buttons&2){
-			switch(emenuhit(2, &m, &mmenu)){
-			case 0:
-				playmove(Pass);
-				break;
-			case 1:
-				undomove(-1);
-				drawgoban();
-				break;
-			case 2:
-				isgameover = 1;
-				print("Winner: %d\n", -turn);
-				break;
-			case 3:
-				markstone();
-				drawgoban();
-			}
-		}else if(m.buttons&4){
-			switch(emenuhit(3, &m, &rmenu)){
-			case 0:
-				isgameover = 1;
-				break;
-			}
-		}
-	}
-}
-
-static void
 drawgoban(void)
 {
 	int i, j;
@@ -209,8 +143,9 @@ drawgoban(void)
 	}
 }
 
+/* TODO: better split move picking between igc.c and draw.c */
 /* Pixel coordinates to Go move. */
-static int
+int
 px2move(Point px)
 {
 	Point p;
@@ -229,30 +164,8 @@ px2move(Point px)
 	return p.y * sgoban + p.x;
 }
 
-int
-pickundo(void)
-{
-	int move;
-	Mouse m;
-
-	esetcursor(&sightcursor);
-	for(;; m = emouse()){
-		/* This event is sent when the button is released. */
-		if(m.buttons&1 && m.buttons&2 && m.buttons&4){
-			continue;
-		}else if(m.buttons&1 || m.buttons&4){
-			move = -1;
-			break;
-		}else if(m.buttons&2){
-			move = px2move(m.xy);
-			break;
-		}
-	}
-	esetcursor(nil);
-	return move;
-}
-
-static void
+/* TODO: mark group & split pick/mark */
+void
 markstone(void)
 {
 	int move;
@@ -283,13 +196,4 @@ markstone(void)
 		}
 	}
 	esetcursor(nil);
-}
-
-void
-eresized(int new)
-{
-	if(new)
-		if(getwindow(display, Refnone) < 0)
-			sysfatal("eresized failed: %r");
-	drawgoban();
 }

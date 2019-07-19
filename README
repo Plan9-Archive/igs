@@ -13,5 +13,6 @@ Options:
 [ ] Scoring?
 
 files:
-goban.c main file, manages the ui.
+igc.c main file.
 go.c go engine.
+draw.c drawing functions.

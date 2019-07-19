@@ -278,17 +278,12 @@ undomove(int move)
 	for(i = 0; i < 4; i++)
 		nbrgrp[i] = -1;
 
-	/* Pick move with the mouse. */
-	if(move == -1)
-		move = pickundo();
-	/* Pick did not abort. */
-	if(move != -1){
-		goban[move] = Empty;
-		group[move] = -1;
-		listnbr(move, nbr);
-		for(i = 0; i < 4; i++)
-			push(group[nbr[i]], nbrgrp, 4);
-	}
+	goban[move] = Empty;
+	group[move] = -1;
+	listnbr(move, nbr);
+	for(i = 0; i < 4; i++)
+		push(group[nbr[i]], nbrgrp, 4);
+
 	for(i = 0; i < 4 && nbrgrp[i] != -1; i++)
 		updatelib(nbrgrp[i]);
 

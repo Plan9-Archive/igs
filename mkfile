@@ -6,5 +6,6 @@ HFILES=igc.h
 OFILES=\
 	igc.$O\
 	go.$O\
+	draw.$O\
 
 </sys/src/cmd/mkone
