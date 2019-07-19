@@ -78,7 +78,8 @@ main(int argc, char *argv[])
 				print("error: %r\n");
 				continue;
 			}else if(isgameover == 1){
-				removedeadgroup(group[move]);
+				if(goban[move] == Black || goban[move] == White)
+					removedeadgroup(group[move]);
 			}
 			drawgoban();
 		}else if(m.buttons&2){
