@@ -112,24 +112,10 @@ drawgoban(void)
 			ellipse(screen, p, sr, sr, 0, display->black, ZP);
 			fillellipse(screen, p, sr-1, sr-1, display->white, ZP);
 			break;
-		case Black + Marked:
-			p = Pt(ogoban.x + i % sgoban * scale * Linew,
-				ogoban.y + i / sgoban * scale * Lineh);
-			bg = allocimagemix(display, DBlack, DGoban);
-			fillellipse(screen, p, sr, sr, bg, ZP);
-			freeimage(bg);
-			break;
-		case White + Marked:
-			p = Pt(ogoban.x + i % sgoban * scale * Linew,
-				ogoban.y + i / sgoban * scale * Lineh);
-			bg = allocimagemix(display, DWhite, DGoban);
-			fillellipse(screen, p, sr, sr, bg, ZP);
-			freeimage(bg);
 		}
 	}
 }
 
-/* TODO: better split move picking between igc.c and draw.c */
 /* Pixel coordinates to Go move. */
 int
 px2move(Point px)

@@ -9,8 +9,8 @@ char *mbuttons[] =
 {
 	"pass",
 	"undo",
+	"restart scoring",
 	"resign",
-	"mark",
 	0
 };
 
@@ -30,6 +30,11 @@ Menu rmenu =
 	rbuttons,
 };
 
+static char* move2coord(int);
+static int coord2move(char*);
+
+static void removedeadgroup(int);
+
 static void
 usage(void)
 {
@@ -37,9 +42,6 @@ usage(void)
 	fprint(2, "usage: %s [-s gobansize]\n", argv0);
 	exits("usage");
 }
-
-static char* move2coord(int);
-static int coord2move(char*);
 
 void
 main(int argc, char *argv[])
@@ -65,16 +67,18 @@ main(int argc, char *argv[])
 	initgoban(sg);
 	drawgoban();
 
-	for(; isgameover == 0; m = emouse()){
+	for(;; m = emouse()){
 		if(m.buttons&1){
 			move = px2move(m.xy);
 			if(move == -1){
 				print("error: %r\n");
 				continue;
 			}
-			if(playmove(move) == -1){
+			if(isgameover == 0 && playmove(move) == -1){
 				print("error: %r\n");
 				continue;
+			}else if(isgameover == 1){
+				removedeadgroup(move);
 			}
 			drawgoban();
 		}else if(m.buttons&2){
@@ -86,12 +90,11 @@ main(int argc, char *argv[])
 				/* call igs undoplease */
 				break;
 			case 2:
-				isgameover = 1;
-				print("Winner: %d\n", -turn);
+				/* call igs undo when scoring */
 				break;
 			case 3:
-				markdeadgroups();
-				drawgoban();
+				isgameover = 1;
+				print("Winner: %d\n", -turn);
 			}
 		}else if(m.buttons&4){
 			switch(emenuhit(3, &m, &rmenu)){
@@ -132,20 +135,16 @@ coord2move(char* coord)
 	return move;
 }
 
-void
-markdeadgroups(void)
+static void
+removedeadgroup(int move)
 {
-	int move;
 	Mouse m;
 
 	for(;; m = emouse()){
 		/* This event is sent when the button is released. */
 		if(m.buttons&1 && m.buttons&2 && m.buttons&4){
 			continue;
-		}else if(m.buttons&2){
-			
 		}else if(m.buttons&1){
-			move = px2move(m.xy);
 			switch(goban[move]){
 			case Black:
 			case White:
@@ -153,16 +152,11 @@ markdeadgroups(void)
 				goban[move] += Marked;
 				return;
 				break;
-			case Black + Marked:
-			case White + Marked:
-				/* Use telnet undo command */
-				goban[move] -= Marked;
-				return;
 			}
 		}
 	}
 }
-
+ 
 void
 eresized(int new)
 {
