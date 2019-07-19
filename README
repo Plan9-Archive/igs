@@ -1,19 +1,16 @@
-Play Go in plan9front, localy or on IGS.
-Automatic scoring has turned out to be much harder than initially thought,
-detecting dead groups is complicated. I will probably add a version with
-consensus: players themselves remove the dead groups.
+IGS client.
+Play go on the IGS - Internet Go Server.
 
 The planned roadmap is:
 [x] Display a goban on which one can place stones.
 [x] Go engine.
 [ ] IGS telnet client.
 
+All offline client functionnalities will only be considered after the IGS client is done.
 Options:
 [ ] GTP?
 [ ] Read & write SGF?
 [ ] Scoring?
-
-IGS offers sgf commands in the telnet interface, this might be the best option.
 
 files:
 goban.c main file, manages the ui.
