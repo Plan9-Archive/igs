@@ -1,0 +1,7 @@
+toggle newundo on - to allow undoplease
+	Player A sends  undoplease
+	Player B receives the message    "24 *SYSTEM*: xxx requests undo."
+	Player B sends 'undo' (to agree), or 'noundo' (to decline).
+
+	If a 'noundo' is sent, the game will become a no undo game.
+Undo does list the removed stones.
