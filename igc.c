@@ -78,7 +78,7 @@ main(int argc, char *argv[])
 				print("error: %r\n");
 				continue;
 			}else if(isgameover == 1){
-				removedeadgroup(move);
+				removedeadgroup(group[move]);
 			}
 			drawgoban();
 		}else if(m.buttons&2){
@@ -95,12 +95,13 @@ main(int argc, char *argv[])
 			case 3:
 				isgameover = 1;
 				print("Winner: %d\n", -turn);
+				exits(0);
 			}
 		}else if(m.buttons&4){
 			switch(emenuhit(3, &m, &rmenu)){
 			case 0:
 				isgameover = 1;
-				break;
+				exits(0);
 			}
 		}
 	}
@@ -136,25 +137,19 @@ coord2move(char* coord)
 }
 
 static void
-removedeadgroup(int move)
+removedeadgroup(int grp)
 {
-	Mouse m;
+	int i;
+	char coord[4] = "";
 
-	for(;; m = emouse()){
-		/* This event is sent when the button is released. */
-		if(m.buttons&1 && m.buttons&2 && m.buttons&4){
-			continue;
-		}else if(m.buttons&1){
-			switch(goban[move]){
-			case Black:
-			case White:
-				/* should mark the entire group */
-				goban[move] += Marked;
-				return;
-				break;
-			}
+	for(i = 0; i < sgoban * sgoban; i++){
+		if(group[i] == grp){
+			/* telnet enter dead group: coord */
+			strcpy(coord, move2coord(i));
+			print("%s\n", coord);
 		}
 	}
+	capture(grp);
 }
  
 void
