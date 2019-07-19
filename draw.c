@@ -1,7 +1,6 @@
 #include <u.h>
 #include <libc.h>
 #include <draw.h>
-#include <cursor.h>
 #include <event.h>
 #include "igc.h"
 
@@ -18,19 +17,6 @@ enum{
 
 enum{
 	DGoban = 0xD79C5EFF
-};
-
-Cursor sightcursor =
-{
-	{-7, -7},
-	{0x1F, 0xF8, 0x3F, 0xFC, 0x7F, 0xFE, 0xFB, 0xDF,
-	0xF3, 0xCF, 0xE3, 0xC7, 0xFF, 0xFF, 0xFF, 0xFF,
-	0xFF, 0xFF, 0xFF, 0xFF, 0xE3, 0xC7, 0xF3, 0xCF,
-	0x7B, 0xDF, 0x7F, 0xFE, 0x3F, 0xFC, 0x1F, 0xF8},
-	{0x00, 0x00, 0x0F, 0xF0, 0x31, 0x8C, 0x21, 0x84,
-	0x41, 0x82, 0x41, 0x82, 0x41, 0x82, 0x7F, 0xFE,
-	0x7F, 0xFE, 0x41, 0x82, 0x41, 0x82, 0x41, 0x82,
-	0x21, 0x84, 0x31, 0x8C, 0x0F, 0xF0, 0x00, 0x00}
 };
 
 static Point ogoban; /* Origin of the lines of the goban. */
@@ -166,12 +152,11 @@ px2move(Point px)
 
 /* TODO: mark group & split pick/mark */
 void
-markstone(void)
+markgroup(void)
 {
 	int move;
 	Mouse m;
 
-	esetcursor(&sightcursor);
 	for(;; m = emouse()){
 		/* This event is sent when the button is released. */
 		if(m.buttons&1 && m.buttons&2 && m.buttons&4){
@@ -183,17 +168,14 @@ markstone(void)
 			switch(goban[move]){
 			case Black:
 			case White:
-				esetcursor(nil);
 				goban[move] += Marked;
 				return;
 				break;
 			case Black + Marked:
 			case White + Marked:
-				esetcursor(nil);
 				goban[move] -= Marked;
 				return;
 			}
 		}
 	}
-	esetcursor(nil);
 }
