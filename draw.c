@@ -122,7 +122,7 @@ drawgoban(void)
 		werrstr("Could not open font.");
 		return -1;
 	}
-	p = addpt(ogoban, Pt(0, scale * Lineh * sgoban));
+	p = addpt(o, Pt(ogoban.x - o.x, scale * (Gobanh + Lineh)));
 	sprint(s, "To play: %s", turn == Black ? "Black " : "White ");
 	stringbg(screen, p, display->black, ZP, font, s, display->white, ZP);
 	p = addpt(p, Pt(0, font->height));
