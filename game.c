@@ -29,6 +29,7 @@ Menu rmenu =
 	rbuttons,
 };
 
+void game(int);
 static char* move2coord(int);
 static int coord2move(char*);
 
