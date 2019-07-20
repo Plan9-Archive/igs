@@ -2,7 +2,7 @@
 #include <libc.h>
 #include <draw.h>
 #include <event.h>
-#include "igc.h"
+#include "game.h"
 
 /* Traditional dimensions in tenth of mm */
 enum{

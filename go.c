@@ -1,7 +1,7 @@
 #include <u.h>
 #include <libc.h>
 #include <draw.h>
-#include "igc.h"
+#include "game.h"
 
 int sgoban;
 int turn;

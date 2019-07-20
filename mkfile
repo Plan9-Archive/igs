@@ -2,9 +2,10 @@
 
 BIN=/$objtype/bin/games
 TARG=igc
-HFILES=igc.h
+HFILES=game.h
 OFILES=\
 	igc.$O\
+	game.$O\
 	go.$O\
 	draw.$O\
 
