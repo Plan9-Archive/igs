@@ -1,6 +1,5 @@
 #include <u.h>
 #include <libc.h>
-#include <stdio.h>
 #include <draw.h>
 #include <event.h>
 #include "igc.h"
@@ -118,7 +117,7 @@ move2coord(int move)
 		coord[0] = 'A' + move % 19;
 	else
 		coord[0] = 'A' + move % 19 + 1;
-	sprintf(coord + 1, "%d", 19 - move / 19);
+	sprint(coord + 1, "%d", 19 - move / 19);
 
 	return coord;
 }
@@ -141,13 +140,11 @@ static void
 removedeadgroup(int grp)
 {
 	int i;
-	char coord[4] = "";
 
 	for(i = 0; i < sgoban * sgoban; i++){
 		if(group[i] == grp){
 			/* telnet enter dead group: coord */
-			strcpy(coord, move2coord(i));
-			print("%s\n", coord);
+			print("%s\n", move2coord(i));
 		}
 	}
 	capture(grp);

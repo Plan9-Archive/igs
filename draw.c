@@ -1,6 +1,5 @@
 #include <u.h>
 #include <libc.h>
-#include <stdio.h>
 #include <draw.h>
 #include <event.h>
 #include "igc.h"
@@ -124,13 +123,13 @@ drawgoban(void)
 		return -1;
 	}
 	p = addpt(ogoban, Pt(0, scale * Lineh * sgoban));
-	sprintf(s, "To play: %s", turn == Black ? "Black " : "White ");
+	sprint(s, "To play: %s", turn == Black ? "Black " : "White ");
 	stringbg(screen, p, display->black, ZP, font, s, display->white, ZP);
 	p = addpt(p, Pt(0, font->height));
-	sprintf(s, "Black prisonners: %d", nblackcaptured);
+	sprint(s, "Black prisonners: %d", nblackcaptured);
 	stringbg(screen, p, display->black, ZP, font, s, display->white, ZP);
 	p = addpt(p, Pt(0, font->height));
-	sprintf(s, "White prisonners: %d", nwhitecaptured);
+	sprint(s, "White prisonners: %d", nwhitecaptured);
 	stringbg(screen, p, display->black, ZP, font, s, display->white, ZP);
 
 	return 0;
