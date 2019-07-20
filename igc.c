@@ -113,11 +113,11 @@ move2coord(int move)
 	char coord[4];
 
 	/* There is no I in coordinates: it goes from H to J. */
-	if(move % 19 < 'I' - 'A' + 1)
-		coord[0] = 'A' + move % 19;
+	if(move % sgoban < 'I' - 'A' + 1)
+		coord[0] = 'A' + move % sgoban;
 	else
-		coord[0] = 'A' + move % 19 + 1;
-	sprint(coord + 1, "%d", 19 - move / 19);
+		coord[0] = 'A' + move % sgoban + 1;
+	sprint(coord + 1, "%d", sgoban - move / sgoban);
 
 	return coord;
 }
@@ -132,7 +132,7 @@ coord2move(char* coord)
 		move = coord[0] - 'A';
 	else
 		move = coord[0] - 'A' - 1;
-	move += (19 - atoi(coord + 1)) * sgoban;
+	move += (sgoban - atoi(coord + 1)) * sgoban;
 	return move;
 }
 
